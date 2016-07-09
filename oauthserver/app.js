@@ -44,7 +44,11 @@ app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs'); // use either jade or ejs       
 // instruct express to server up static assets
-app.use(express.static(__dirname));
+app.use(express.static( path.join(__dirname, 'css')));
+// instruct express to server up static assets
+app.use(express.static( path.join(__dirname, 'js')));
+// instruct express to server up static assets
+app.use(express.static( path.join(__dirname, 'logs')));
 
 var fs = require("fs");
 // Set server port

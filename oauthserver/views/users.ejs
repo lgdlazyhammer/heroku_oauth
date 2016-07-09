@@ -1,24 +1,36 @@
-<link href="../css/all.css" rel="stylesheet" type="text/css">
+<link href="all.css" rel="stylesheet" type="text/css">
 
-<header>users</header>
+<header>users information</header>
+<hr>
+<br/>
 <article>
 	<form>
-		<table>
+		<table class="table">
+			<tr class="tr">
+				<th class="th">name</td>
+				<th class="th">password</td>
+				<th class="th">gender</td>
+				<th class="th">phone number</td>
+				<th class="th">email address</td>
+				<th class="th">create date</td>
+				<th class="th">update date</td>
+			</tr> 
 			<% users.forEach(function(user){ %>  
-			<tr>
-				<td>name</td><td><%=user.name %></td>
-				<td>password</td><td><%=user.password %></td>
-				<td>gender</td><td><%=user.gender %></td>
-				<td>phone number</td><td><%=user.phonenumber %></td>
-				<td>email address</td><td><%=user.email %></td>
-				<td>create date</td><td><%=user.createdate %></td>
-				<td>update date</td><td><%=user.updatedate %></td>
+			<tr class="tr">
+				<td class="td"><%=user.name %></td>
+				<td class="td"><%=user.password %></td>
+				<td class="td"><%=user.gender %></td>
+				<td class="td"><%=user.phonenumber %></td>
+				<td class="td"><%=user.email %></td>
+				<td class="td"><%=user.createdate %></td>
+				<td class="td"><%=user.updatedate %></td>
 			</tr>
 			<% }) %> 
 		</table>
 	</form>
 </article>
-<footer>users footer</footer>
+<hr/>
+<footer>users information</footer>
 
 
 
