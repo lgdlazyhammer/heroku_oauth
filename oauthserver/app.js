@@ -64,6 +64,29 @@ var OAuthUser = require('./user_property');
 var userService = require('./user_service');
 
 // set routes
+app.use('/login', function(req, res) {
+	
+    res.render('local_login');
+});
+
+// set routes
+app.use('/local/login', function(req, res) {
+	
+	userService.getOAuthUser(req.body.username, req.body.password, function(results){
+		logger.info('get users info ' + JSON.stringify(results));
+		console.log("user results :" + JSON.stringify(results));
+
+		if(results.rows.length > 0){
+			res.redirect(301, '/users');
+		}
+	},function(error){
+		logger.error('local login get userinfo failed ' + error);
+		console.log("local user login error :" + JSON.stringify(error));
+	});
+
+});
+
+// set routes
 app.use('/register', function(req, res) {
 	
     res.render('register');
@@ -89,6 +112,23 @@ app.use('/logs', function(req, res) {
 		var params = { paramFiles: locals };
 		res.render('logs',params);
 	});
+});
+
+
+// set routes
+app.use('/users', function(req, res) {
+	
+	userService.getAll(function(results){
+		logger.info('get users info ' + JSON.stringify(results));
+		console.log("user results :" + JSON.stringify(results));
+
+		var params = { users: results.rows };
+		res.render('users',params);
+	},function(error){
+		logger.error('get users info failed ' + error);
+		console.log("get users error :" + JSON.stringify(error));
+	});
+
 });
 
 // set routes
@@ -245,37 +285,45 @@ app.use('/oauth/token', function(req, res) {
 	console.log(req.body.consumer_session.substring(0,req.body.consumer_session.length-1) + "*****"),
     console.log(req.body);
 	
-    sessionService.getOAuthSession(req.body.consumer_session.substring(0,req.body.consumer_session.length-1),function(results){
-		console.log("callback url info*******"),
-		console.log(results);
-		console.log(results.rows[0].session);
-		console.log(JSON.parse(results.rows[0].session).callback_ip);
-		//res.end(rs.alphaLower(20));
-		var consumerKey = JSON.parse(results.rows[0].session).consumer;
-		var callbackIp = JSON.parse(results.rows[0].session).callback_ip;
-		var start = callbackIp.lastIndexOf(":")+1;
-		var end = callbackIp.length;
-		console.log(callbackIp.substring(start,end));
-		
-		redirect_url = "http://"+ callbackIp.substring(start,end)+ ':3000'+ JSON.parse(results.rows[0].session).callback_url;
-		
-		var oauthSession = new OAuthSession(session_id,JSON.stringify({ user: req.body.username , consumer:consumerKey }),Math.floor(Date.now() / 1000));
-		sessionService.save(oauthSession,function(save_results){
-			logger.info('resource token succesfully generated redirect to consumer server.');
-			res.redirect(301, redirect_url + '?resource_token='+session_id);	
-		},function(error){
-			logger.error('save resource token session failed! ' + error);
-			var locals = { error : error, process:'save resource token' };
-			res.render('error',locals);
-		});
+	userService.getOAuthUser(req.body.username, req.body.password, function(results){
+		logger.info('get users info ' + JSON.stringify(results));
+		console.log("user results :" + JSON.stringify(results));
+
+		if(results.rows.length > 0){
+			sessionService.getOAuthSession(req.body.consumer_session.substring(0,req.body.consumer_session.length-1),function(results){
+				console.log("callback url info*******"),
+				console.log(results);
+				console.log(results.rows[0].session);
+				console.log(JSON.parse(results.rows[0].session).callback_ip);
+				//res.end(rs.alphaLower(20));
+				var consumerKey = JSON.parse(results.rows[0].session).consumer;
+				var callbackIp = JSON.parse(results.rows[0].session).callback_ip;
+				var start = callbackIp.lastIndexOf(":")+1;
+				var end = callbackIp.length;
+				console.log(callbackIp.substring(start,end));
+				
+				redirect_url = "http://"+ callbackIp.substring(start,end)+ ':3000'+ JSON.parse(results.rows[0].session).callback_url;
+				
+				var oauthSession = new OAuthSession(session_id,JSON.stringify({ user: req.body.username , consumer:consumerKey }),Math.floor(Date.now() / 1000));
+				sessionService.save(oauthSession,function(save_results){
+					logger.info('resource token succesfully generated redirect to consumer server.');
+					res.redirect(301, redirect_url + '?resource_token='+session_id);	
+				},function(error){
+					logger.error('save resource token session failed! ' + error);
+					var locals = { error : error, process:'save resource token' };
+					res.render('error',locals);
+				});
+			},function(error){
+					logger.error('get consumer session to save resource session failed! ' + error);
+					var locals = { error : error, process:'get consumer session to save resource session' };
+					res.render('error',locals);
+			});
+		}
 	},function(error){
-			logger.error('get consumer session to save resource session failed! ' + error);
-			var locals = { error : error, process:'get consumer session to save resource session' };
-			res.render('error',locals);
+		logger.error('login get user info failed ' + error);
+		console.log("user login error :" + JSON.stringify(error));
 	});
-		
-    
-     
+
 });
 
 app.use('/oauth/resource', function(req, res) {

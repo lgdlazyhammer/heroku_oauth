@@ -1,0 +1,85 @@
+<link href="../css/all.css" rel="stylesheet" type="text/css">
+
+<header>users</header>
+<article>
+	<form>
+		<table>
+			<% users.forEach(function(user){ %>  
+			<tr>
+				<td>name</td><td><%=user.name %></td>
+				<td>password</td><td><%=user.password %></td>
+				<td>gender</td><td><%=user.gender %></td>
+				<td>phone number</td><td><%=user.phonenumber %></td>
+				<td>email address</td><td><%=user.email %></td>
+				<td>create date</td><td><%=user.createdate %></td>
+				<td>update date</td><td><%=user.updatedate %></td>
+			</tr>
+			<% }) %> 
+		</table>
+	</form>
+</article>
+<footer>users footer</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+$(function(){
+	// Returns width of browser viewport
+	$( window ).width();
+	// Returns width of HTML document
+	$( document ).width();
+	
+	$("body").css("padding-left",($(window).width() - $(".login-form").width())/2+"px");
+	$("body").css("padding-top",($(window).height() - $(".login-form").height())/2+"px");
+});
+</script>

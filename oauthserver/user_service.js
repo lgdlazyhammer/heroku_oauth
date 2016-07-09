@@ -10,11 +10,23 @@ logger.setLevel('INFO');
 
 var db = require('./dbservice.js');
 
-module.exports.getOAuthUser = function(ID, CALLBACK, CALLBACKERROR){	
+module.exports.getOAuthUser = function(ID, PASSWORD, CALLBACK, CALLBACKERROR){	
 
-	var selectSQLString = "SELECT * FROM users WHERE UUID = $1";
+	var selectSQLString = "SELECT * FROM users WHERE name = $1 and password = $2";
 	var value = [];
 	value.push(ID);
+	value.push(PASSWORD);
+	
+	db.select(selectSQLString, value, CALLBACK, function(error){
+		logger.error('select user info failed!' + error);
+		CALLBACKERROR(error);
+	});
+}
+
+module.exports.getAll = function(CALLBACK, CALLBACKERROR){	
+
+	var selectSQLString = "SELECT * FROM users";
+	var value = [];
 	
 	db.select(selectSQLString, value, CALLBACK, function(error){
 		logger.error('select user info failed!' + error);
