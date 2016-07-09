@@ -1,0 +1,35 @@
+//kill nodejs process
+Enter 'top' at command line and find the process ID of the process you want to kill. 
+Press 'K', it will prompt you to enter the process id that you want to kill, enter it, and press enter. 
+It will then ask what signal you want to transmit to the process, enter '9' and press enter. 
+The process will be killed.
+//stop nodejs server
+killall -KILL node
+
+//alter the md5 authentication to use unencrypted password
+sudo vim /var/lib/pgsql/9.3/data/pg_hba.conf
+
+# IPv4 local connections:
+host    all         all         127.0.0.1/32          trust
+
+//init db
+service postgresql-9.3 initdb
+//start service
+service postgresql-9.3 start
+//stop service
+service postgresql-9.3 stop
+//change user and login 
+su postgres
+psql
+
+nodejs一般是当成一条用户命令执行的，当用户断开客户连接，运用也就停了，很烦人。如何让nodejs应用当成服务，在后台执行呢？
+
+最简单的办法：
+
+$ nohup node app.js &
+但是，forever能做更多的事情，比如分别记录输出和错误日志，比如可以在js中作为api使用。
+
+$ sudo npm install forever -g   #安装
+$ forever start app.js          #启动
+$ forever stop app.js           #关闭
+$ forever start -l logs/forever.log -o logs/out.log -e logs/err.log app.js   #输出日志和错误

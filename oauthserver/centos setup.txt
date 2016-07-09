@@ -1,0 +1,53 @@
+//cehck centos version 
+ cat /proc/version
+ uname -a
+ uname -r
+//get all info
+hostnamectl status
+
+
+//exit python commandline
+ctrl + D
+
+//list all installable package
+yum list
+
+//list installed packages
+yum installed
+
+//display the status of specified package
+yum list packagename
+
+//delete file
+rm filename
+//Remove the contents of directories recursively
+rm -r folername
+//force delete
+rm -f filename/foldername
+
+//delete everything on your computer //cause crush up
+$ rm -rf /
+$ rm -rf *
+
+//一次显示整个文件。
+$ cat filename
+//从键盘创建一个文件。
+$ cat > filename  
+ 只能创建新文件,不能编辑已有文件.
+//将几个文件合并为一个文件：
+ $cat file1 file2 > file
+
+//after install git just run command below to install nvm
+wget -qO- https://raw.github.com/appleboy/nvm/develop/install.sh | sh
+
+
+
+
+
+//yum update 
+yum localinstall http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-1.noarch.rpm
+//yum install postgres server
+yum install postgresql93-server
+
+
+
