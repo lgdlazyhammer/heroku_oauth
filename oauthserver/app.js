@@ -222,7 +222,8 @@ app.use('/oauth/authorize', function(req, res) {
         var consumerExist = true;
         if(consumerExist){
             var clientIp = requestIp.getClientIp(req);
-            console.log("client ip:  "+clientIp);
+			logger.info('consumer authorize ip from params ' + clientIpParam);
+			logger.info('consumer authorize ip from server check method ' + clientIp);
             //sess.callback_url = clientIp+callback_url;
             //sess.consumer_token = token;
             var oauthSessionInfo = JSON.stringify({ consumer: key, callback_ip: clientIpParam, callback_port:port, callback_url: callback_url });
@@ -253,17 +254,18 @@ app.use('/oauth/authorize', function(req, res) {
         
         var key = req.query.key;
         var secret = req.query.secret;
+		var clientIpParam = req.query.ip;
 		var port = req.query.port;
         var callback_url = req.query.callback_url;
 
          //check the consumer
         var consumerExist = true;
         if(consumerExist){
-            var clientIp = requestIp.getClientIp(req);
-            console.log("client ip:  "+clientIp);
+			logger.info('consumer authorize ip from params ' + clientIpParam);
+			logger.info('consumer authorize ip from server check method ' + clientIp);
             //sess.callback_url = clientIp+callback_url;
             //sess.consumer_token = token;
-            var oauthSessionInfo = JSON.stringify({ consumer: key , callback_ip: clientIp, callback_port:port, callback_url: callback_url });
+            var oauthSessionInfo = JSON.stringify({ consumer: key , callback_ip: clientIpParam, callback_port:port, callback_url: callback_url });
             var expiresDate = Math.floor(Date.now() / 1000);
             console.log(oauthSessionInfo +"********"+expiresDate);
             var oauthSession = new OAuthSession(session_id,oauthSessionInfo,expiresDate);
