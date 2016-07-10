@@ -28,7 +28,13 @@ var bodyParser = require("body-parser");
 //get the request ip address
 var requestIp = require('request-ip');
 
+//os is native for nodejs
+var os = require( 'os' );
+var networkInterfaces = os.networkInterfaces( );
+
 var fs = require("fs");
+
+var defaults = require('./defaults.js');
 
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -42,6 +48,10 @@ app.use(express.static( path.join(__dirname, 'js')));
 app.use(express.static( path.join(__dirname, 'logs')));
 // Set server port
 app.listen(app.get('port'),function(){
+	
+	console.log( networkInterfaces );
+	logger.info('Node app is running on ip ' + JSON.stringify(networkInterfaces));
+	logger.info('Node app is running on ip ' + serverIp.address());
 	logger.info('Node app is running on port ' + app.get('port'));
 	console.log('Node app is running on port', app.get('port'));
 });
@@ -75,12 +85,12 @@ app.use('/oauth/login', function(req, response) {
     var consumer_info="", consumer_token="";
     
     var postData = querystring.stringify({
-      'key' : 'adfsa', 'secret':'fsdfs', 'port':app.get('port'), 'callback_url':'/oauth/callback'
+      'key' : 'adfsa', 'secret':'fsdfs', 'ip':networkInterfaces.eth1.address, 'port':app.get('port'), 'callback_url':'/oauth/callback'
     });
     
     var options = {
-        hostname: 'localhost',
-        port: 4000,
+        hostname: defaults.host,
+        port: defaults.port,
         path: '/oauth/authorize',
         method: 'POST',
         headers: {
@@ -107,7 +117,7 @@ app.use('/oauth/login', function(req, response) {
                 console.log('No more data in response.');
                 //get the response set-cookie value and set to the new request
                 //response["set-cookie"] = res.headers["set-cookie"];
-				response.redirect(301, 'http://localhost:4000/oauth/login?consumer_token='+consumer_token);
+				response.redirect(301, 'http://'+defaults.host+':'+ defaults.port+'/oauth/login?consumer_token='+consumer_token);
             }
         })
     });

@@ -86,6 +86,9 @@ app.use('/local/login', function(req, res) {
 	},function(error){
 		logger.error('local login get userinfo failed ' + error);
 		console.log("local user login error :" + JSON.stringify(error));
+		//res.status(403).send("unauthorized");
+		var locals = { error : error, process : 'oauth login ' };
+		res.render('error',locals);
 	});
 
 });
@@ -102,6 +105,7 @@ app.use('/logs', function(req, res) {
 	fs.readdir(__dirname+"/logs/",function(err, files){
 		if (err) {
 			logger.error('read logs failed! ' + err);
+			res.status(500).send("read logs failed");
 		   return console.error(err);
 		}
 		
@@ -131,6 +135,10 @@ app.use('/users', function(req, res) {
 	},function(error){
 		logger.error('get users info failed ' + error);
 		console.log("get users error :" + JSON.stringify(error));
+		//res.status(500).send("get users information failed. " + error);
+		
+		var locals = { error : error, process : 'oauth login get users information ' };
+		res.render('error',locals);
 	});
 
 });
@@ -206,6 +214,7 @@ app.use('/oauth/authorize', function(req, res) {
         
         var key = req.body.key;
         var secret = req.body.secret;
+		var clientIpParam = req.body.ip;
 		var port = req.body.port;
         var callback_url = req.body.callback_url;
         
@@ -216,7 +225,7 @@ app.use('/oauth/authorize', function(req, res) {
             console.log("client ip:  "+clientIp);
             //sess.callback_url = clientIp+callback_url;
             //sess.consumer_token = token;
-            var oauthSessionInfo = JSON.stringify({ consumer: key, callback_ip: clientIp, callback_port:port, callback_url: callback_url });
+            var oauthSessionInfo = JSON.stringify({ consumer: key, callback_ip: clientIpParam, callback_port:port, callback_url: callback_url });
             var expiresDate = Math.floor(Date.now() / 1000);
             console.log(oauthSessionInfo +"********"+expiresDate+"***date tostring****"+Date.now().toString());
             var oauthSession = new OAuthSession(session_id,oauthSessionInfo,expiresDate);
@@ -268,8 +277,11 @@ app.use('/oauth/authorize', function(req, res) {
                     res.status(200).send(JSON.stringify(temp));
             },function(error){
 				logger.error('save consumer session failed! ' + error);
-				var temp = { error: error, process:'save consumer session' };
-                res.status(500).send(JSON.stringify(temp));
+				//var temp = { error: error, process:'save consumer session' };
+                //res.status(500).send(JSON.stringify(temp));
+				
+				var locals = { error : error, process : 'oauth login ' };
+				res.render('error',locals);
 			});
         }else{
             res.status(403).send("unauthorized");
@@ -332,7 +344,10 @@ app.use('/oauth/token', function(req, res) {
 	},function(error){
 		logger.error('login get user info failed ' + error);
 		console.log("user login error :" + JSON.stringify(error));
-		res.status(403).send("unauthorized");
+		//res.status(403).send("unauthorized");
+		
+		var locals = { error : error, process : 'oauth login ' };
+		res.render('error',locals);
 	});
 
 });
