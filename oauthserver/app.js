@@ -105,7 +105,9 @@ app.use('/logs', function(req, res) {
 	fs.readdir(__dirname+"/logs/",function(err, files){
 		if (err) {
 			logger.error('read logs failed! ' + err);
-			res.status(500).send("read logs failed");
+			//res.status(500).send("read logs failed");
+			var locals = { error : err, process : 'logs file get error ' };
+			res.render('error',locals);
 		   return console.error(err);
 		}
 		
@@ -194,7 +196,9 @@ app.use('/oauth/login', function(req, res) {
             res.render('login',locals);
         }else{
 			logger.info('consumer authorize failed can not find consumer in session.');
-            res.send(403, "unauthorized");
+            //res.send(403, "unauthorized");
+			var locals = { error : 'unauthorized', process : 'oauth login ' };
+			res.render('error',locals);
         }
     },function(error){
 		logger.error('user login failed! ' + error);
@@ -240,11 +244,15 @@ app.use('/oauth/authorize', function(req, res) {
                     res.status(200).send(JSON.stringify(temp));
             },function(error){
 				logger.error('save consumer session failed! ' + error);
-				var temp = { error: error, process:'save consumer session' };
-                res.status(500).send(JSON.stringify(temp));
+				//var temp = { error: error, process:'save consumer session' };
+                //res.status(500).send(JSON.stringify(temp));
+				var locals = { error : error, process : 'save consumer session' };
+				res.render('error',locals);
 			});
         }else{
-            res.status(403).send("unauthorized");
+            //res.status(403).send("unauthorized");
+			var locals = { error : 'unauthorized', process : 'oauth login ' };
+			res.render('error',locals);
         }
         
     }
@@ -286,7 +294,9 @@ app.use('/oauth/authorize', function(req, res) {
 				res.render('error',locals);
 			});
         }else{
-            res.status(403).send("unauthorized");
+            //res.status(403).send("unauthorized");
+			var locals = { error : 'unauthorized', process : 'oauth login ' };
+			res.render('error',locals);
         }
     }
     
@@ -341,7 +351,9 @@ app.use('/oauth/token', function(req, res) {
 		}else{
 			logger.error('login get user info failed ' + error);
 			console.log("user login error :" + JSON.stringify(error));
-			res.status(403).send("unauthorized");
+			//res.status(403).send("unauthorized");
+			var locals = { error : 'unauthorized', process : 'oauth login ' };
+			res.render('error',locals);
 		}
 	},function(error){
 		logger.error('login get user info failed ' + error);
