@@ -181,7 +181,7 @@ app.use('/oauth/login', function(req, res) {
         
         var locals = { consumer_token : req.query.consumer_token };
         
-        if(result.rows != null && result.rows != undefined){
+        if(result.rows != null && result.rows != undefined && result.rows.length > 0){
 			logger.info('consumer authorize success redirect to login page.');
             res.render('login',locals);
         }else{
@@ -206,6 +206,7 @@ app.use('/oauth/authorize', function(req, res) {
         
         var key = req.body.key;
         var secret = req.body.secret;
+		var port = req.body.port;
         var callback_url = req.body.callback_url;
         
         //check the consumer
@@ -215,7 +216,7 @@ app.use('/oauth/authorize', function(req, res) {
             console.log("client ip:  "+clientIp);
             //sess.callback_url = clientIp+callback_url;
             //sess.consumer_token = token;
-            var oauthSessionInfo = JSON.stringify({ consumer: key, callback_ip: clientIp, callback_url: callback_url });
+            var oauthSessionInfo = JSON.stringify({ consumer: key, callback_ip: clientIp, callback_port:port, callback_url: callback_url });
             var expiresDate = Math.floor(Date.now() / 1000);
             console.log(oauthSessionInfo +"********"+expiresDate+"***date tostring****"+Date.now().toString());
             var oauthSession = new OAuthSession(session_id,oauthSessionInfo,expiresDate);
@@ -243,6 +244,7 @@ app.use('/oauth/authorize', function(req, res) {
         
         var key = req.query.key;
         var secret = req.query.secret;
+		var port = req.query.port;
         var callback_url = req.query.callback_url;
 
          //check the consumer
@@ -252,7 +254,7 @@ app.use('/oauth/authorize', function(req, res) {
             console.log("client ip:  "+clientIp);
             //sess.callback_url = clientIp+callback_url;
             //sess.consumer_token = token;
-            var oauthSessionInfo = JSON.stringify({ consumer: key , callback_ip: clientIp, callback_url: callback_url });
+            var oauthSessionInfo = JSON.stringify({ consumer: key , callback_ip: clientIp, callback_port:port, callback_url: callback_url });
             var expiresDate = Math.floor(Date.now() / 1000);
             console.log(oauthSessionInfo +"********"+expiresDate);
             var oauthSession = new OAuthSession(session_id,oauthSessionInfo,expiresDate);
@@ -306,7 +308,7 @@ app.use('/oauth/token', function(req, res) {
 				var end = callbackIp.length;
 				console.log(callbackIp.substring(start,end));
 				
-				redirect_url = "http://"+ callbackIp.substring(start,end)+ ':3000'+ JSON.parse(results.rows[0].session).callback_url;
+				redirect_url = "http://"+ callbackIp.substring(start,end)+ ':' + JSON.parse(results.rows[0].session).callback_port + JSON.parse(results.rows[0].session).callback_url;
 				
 				var oauthSession = new OAuthSession(session_id,JSON.stringify({ user: req.body.username , consumer:consumerKey }),Math.floor(Date.now() / 1000));
 				sessionService.save(oauthSession,function(save_results){
@@ -322,10 +324,15 @@ app.use('/oauth/token', function(req, res) {
 					var locals = { error : error, process:'get consumer session to save resource session' };
 					res.render('error',locals);
 			});
+		}else{
+			logger.error('login get user info failed ' + error);
+			console.log("user login error :" + JSON.stringify(error));
+			res.status(403).send("unauthorized");
 		}
 	},function(error){
 		logger.error('login get user info failed ' + error);
 		console.log("user login error :" + JSON.stringify(error));
+		res.status(403).send("unauthorized");
 	});
 
 });

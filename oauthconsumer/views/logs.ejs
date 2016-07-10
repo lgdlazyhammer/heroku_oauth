@@ -1,18 +1,25 @@
-<link href="../css/all.css" rel="stylesheet" type="text/css">
+<link href="all.css" rel="stylesheet" type="text/css">
 
-<form>
-	<table>
-		<tr>
-			<td>logs</td>
-		</tr>
-		
-		<% paramFiles.forEach(function(file){ %>  
-		<tr>
-			<td><a href="../logs/<%= file.name %>"><%= file.name %></a></td>
-		</tr>
-		<% }) %> 
-	</table>
-</form>
+<header>resource token</header>
+<hr>
+<br/>
+<article>
+	<form>
+		<table class="table">
+			<tr>
+				<td>logs</td>
+			</tr>
+			
+			<% paramFiles.forEach(function(file){ %>  
+			<tr>
+				<td><a href="<%= file.name %>"><%= file.name %></a></td>
+			</tr>
+			<% }) %> 
+		</table>
+	</form>
+</article>
+<hr/>
+<footer>resource token</footer>
 
 
 

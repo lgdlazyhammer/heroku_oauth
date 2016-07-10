@@ -37,7 +37,9 @@ app.use(bodyParser.json());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs'); // use either jade or ejs       
 // instruct express to server up static assets
-app.use(express.static(__dirname));
+app.use(express.static( path.join(__dirname, 'css')));
+app.use(express.static( path.join(__dirname, 'js')));
+app.use(express.static( path.join(__dirname, 'logs')));
 // Set server port
 app.listen(app.get('port'),function(){
 	logger.info('Node app is running on port ' + app.get('port'));
@@ -73,12 +75,12 @@ app.use('/oauth/login', function(req, response) {
     var consumer_info="", consumer_token="";
     
     var postData = querystring.stringify({
-      'key' : 'adfsa','secret':'fsdfs','callback_url':'/oauth/callback'
+      'key' : 'adfsa', 'secret':'fsdfs', 'port':app.get('port'), 'callback_url':'/oauth/callback'
     });
     
     var options = {
-        hostname: '172.17.148.102',
-        port: 31487,
+        hostname: 'localhost',
+        port: 4000,
         path: '/oauth/authorize',
         method: 'POST',
         headers: {
@@ -105,7 +107,7 @@ app.use('/oauth/login', function(req, response) {
                 console.log('No more data in response.');
                 //get the response set-cookie value and set to the new request
                 //response["set-cookie"] = res.headers["set-cookie"];
-				response.redirect(301, 'https://172.17.148.102:31487/oauth/login?consumer_token='+consumer_token);
+				response.redirect(301, 'http://localhost:4000/oauth/login?consumer_token='+consumer_token);
             }
         })
     });
