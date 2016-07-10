@@ -349,10 +349,10 @@ app.use('/oauth/token', function(req, res) {
 					res.render('error',locals);
 			});
 		}else{
-			logger.error('login get user info failed ' + error);
-			console.log("user login error :" + JSON.stringify(error));
+			logger.error('login get user info failed ');
+			console.log("user login didn't register");
 			//res.status(403).send("unauthorized");
-			var locals = { error : 'unauthorized', process : 'oauth login ' };
+			var locals = { error : 'unauthorized', process : 'oauth login failed did not register. ' };
 			res.render('error',locals);
 		}
 	},function(error){
