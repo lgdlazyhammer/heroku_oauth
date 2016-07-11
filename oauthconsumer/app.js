@@ -9,6 +9,7 @@ var logger = log4js.getLogger('cheese');
 logger.setLevel('INFO');
 // set variables for environment
 var express = require('express');
+var engine = require('ejs-locals');
 var app = express();
 //use default express session store
 var session = require('express-session');
@@ -27,6 +28,8 @@ var querystring = require('querystring');
 var bodyParser = require("body-parser");
 //get the request ip address
 var requestIp = require('request-ip');
+//get server ip
+var serverIp = require('ip');
 
 //os is native for nodejs
 var os = require( 'os' );
@@ -39,9 +42,12 @@ var defaults = require('./defaults.js');
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+// use ejs-locals for all ejs templates:
+app.engine('ejs', engine);
+// use either jade or ejs
+app.set('view engine', 'ejs');   
 // views as directory for all template files
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs'); // use either jade or ejs       
+app.set('views', path.join(__dirname, 'views'));    
 // instruct express to server up static assets
 app.use(express.static( path.join(__dirname, 'css')));
 app.use(express.static( path.join(__dirname, 'js')));
