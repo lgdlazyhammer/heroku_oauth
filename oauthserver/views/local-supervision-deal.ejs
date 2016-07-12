@@ -1,0 +1,52 @@
+<% layout('layout-super-user') -%>
+<% stylesheet('/css/all.css') -%>
+<% stylesheet('/css/animate.min.css') -%>
+<% stylesheet('/css/bootstrap.min.css') -%>
+<% stylesheet('/css/bootstrap-theme.min.css') -%>
+<% stylesheet('/css/bootstrap-switch.min.css') -%>
+<% script('/js/SoundJS/lib/soundjs-0.6.2.min.js') -%>
+<% script('/js/PreloadJS/lib/preloadjs-0.6.2.min.js') -%>
+<% script('/js/jquery-3.0.0.min.js') -%>
+<% script('/js/jquery-migrate-3.0.0.min.js') -%>
+<% script('/js/bootstrap.min.js') -%>
+<% script('/js/bootstrap-switch.min.js') -%>
+<% script('/js/local-supervision-deal.js') -%>
+
+<div class="container-fluid">
+	<div class="row fill-table-upper-content">&nbsp;
+	</div>
+	<div id="supervisionDealForm" class="row">
+		<div class="col-md-1">
+		</div>
+		<div class="col-md-11">
+			<form class="form-inline" id="supervisionDealFormForm" action="">
+				<div class="form-group">
+					<label for="userName1">user</label>
+					<input type="text" class="form-control" id="userName1" placeholder="user name">
+				</div>
+				<div class="form-group">
+					<label for="consumer1">consumer</label>
+					<input type="text" class="form-control" id="consumer1" placeholder="consumer">
+				</div>
+				<div class="form-group">
+					<label for="resourceOwner1">resource owner</label>
+					<input type="text" class="form-control" id="resourceOwner1" placeholder="resource owner">
+				</div>
+				<div class="form-group">
+					<div id="supervisionCheckSwitch" class="switch" data-on="primary" data-off="info">
+						<input name="local-supervsion-checkbox" type="checkbox" checked />
+					</div>
+				</div>
+				<br/>
+				<br/>
+				<br/>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button id="submitSupervisionDealFormForm" type="button" class="btn btn-primary">Send invitation</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+

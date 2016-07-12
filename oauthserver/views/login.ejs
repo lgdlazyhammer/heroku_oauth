@@ -1,109 +1,58 @@
-<link href="../all.css" rel="stylesheet" type="text/css">
+<% layout('layout') -%>
+<% stylesheet('/css/all.css') -%>
+<% stylesheet('/css/animate.min.css') -%>
+<% stylesheet('/css/bootstrap.min.css') -%>
+<% stylesheet('/css/bootstrap-theme.min.css') -%>
+<% script('/js/SoundJS/lib/soundjs-0.6.2.min.js') -%>
+<% script('/js/PreloadJS/lib/preloadjs-0.6.2.min.js') -%>
+<% script('/js/jquery-3.0.0.min.js') -%>
+<% script('/js/bootstrap.min.js') -%>
+<% script('/js/login.js') -%>
 
-<header>user login</header>
-<hr>
-<br/>
-<article>
-	<form action="/oauth/token" method="post">
-		<table class="table">
-			<tr>
-				<td>
-					<svg width="40" height="40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<ellipse cx="21" cy="17" rx="5.5" ry="5.98" fill="#990033" stroke="#990000" />
-						<ellipse cx="20" cy="16" rx="0" ry="0" fill="#993300" stroke="#990000" />
-						<ellipse cx="23" cy="15" rx="0" ry="0" fill="#993300" stroke="#990000" />
-						<ellipse cx="20" cy="16" rx="0" ry="0" fill="#0033FF" stroke="#990000" />
-						<rect x="14" y="21" width="14" height="11" fill="#663333" stroke="#990000" />
-					</svg>
-				</td>
-				<td>
-					<div class="form-group">
-						<input type="text" name="username"></input>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<svg width="40" height="40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-						<path d="M142.49,30.493C141.45,6.455,94.925,0.499,70.118,0.499 c-23.781,0-70.643,6.674-69.62,29.994c1.04,24.036,46.525,29.992,72.032,29.992C96.651,60.485,143.512,54.053,142.49,30.493z M79.768,55.718c-17.233,1.908-34.803-11.426-36.193-30.697c-1.022-14.042,4.825-18.09,19.31-19.756 c17.219-1.908,34.803,11.184,36.529,30.466C100.436,49.773,94.589,54.294,79.768,55.718z" transform="matrix(0.1830986,0,0,0.1833333,6.908451,11.90833)" fill="#FF0000" stroke="#990000" />
-						<rect x="5" y="19" width="30" height="12" fill="#996600" stroke="#990000" />
-					</svg>
-				</td>
-				<td>
-					<div class="form-group">
-						<input type="password" name="password"></input>
-					</div>
-				</td>
-			</tr>
-			<tr><td><input type="hidden" name="consumer_session" value=<%= consumer_token %>/></td></tr>
-			<tr>
-				<td><button class="btn btn-primary" type="submit">submit</button></td>
-				<td><button class="btn btn-primary" type="reset">reset</button></td>
-			</tr>
-		</table>
-	</form>
-</article>
-<hr/>
-<footer>user login</footer>
+<div class="container-fluid">
+	<div class="row fill-login-upper-content">&nbsp;
+	</div>
+	<div id="loginForm" class="row">
+		<div class="col-md-5"></div>
+		<div class="col-md-2">
+			<form id="loginFormForm" class="panel panel-primary" action="/oauth/token" method="post">
+				<div class="panel-body bg-primary">
+					<label for="exampleInputEmail1">Email address</label>
+					<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+				</div>
+				<div class="panel-body bg-primary">
+					<label for="exampleInputPassword1">Password</label>
+					<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+				</div>
+				<div class="panel-body bg-primary">
+					<button type="button" class="btn btn-default" data-toggle="modal" data-target="#confirmLogin">Submit</button>
+					<button type="reset" class="btn btn-default">Reset</button>
+				</div>
+			</form>
+			<div class="alert alert-warning alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				please <strong>Log in</strong> to proceed.<br/>
+				if you don't have an account please <a href="/register"><strong>register</strong></a>
+			</div>
+		</div>
+		<div class="col-md-5"></div>
+	</div>
+	<div id="confirmLogin" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Login</h4>
+				</div>
+				<div class="modal-body">
+					are you confirm to <strong>Log in</strong>
+				</div>
+				<div class="modal-footer">
+					<button id="closeLoginFormAlertWindow" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button id="submitLoginFormAlertWindow" type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<script type="text/javascript">
-$(function(){
-	// Returns width of browser viewport
-	$( window ).width();
-	// Returns width of HTML document
-	$( document ).width();
-	
-	$("body").css("padding-left",($(window).width() - $(".login-form").width())/2+"px");
-	$("body").css("padding-top",($(window).height() - $(".login-form").height())/2+"px");
-});
-</script>

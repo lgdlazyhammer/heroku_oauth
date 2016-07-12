@@ -12,6 +12,7 @@ logger.setLevel('INFO');
 
 // set variables for environment
 var express = require('express');
+var engine = require('ejs-locals');
 var app = express();
 //use default express session store
 var session = require('express-session');
@@ -34,6 +35,14 @@ var serverIp = require('ip');
 //os is native for nodejs
 var os = require( 'os' );
 var networkInterfaces = os.networkInterfaces( );
+//require fs to deal with files and folders
+var fs = require("fs");
+
+var sessionService = require('./session_service');
+var OAuthSession = require('./session_property');
+
+var OAuthUser = require('./user_property');
+var userService = require('./user_service');
 
 //set port for heroku
 app.set('port', (process.env.PORT || 4000));
@@ -42,15 +51,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // views as directory for all template files
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs'); // use either jade or ejs       
+// use ejs-locals for all ejs templates:
+app.engine('ejs', engine);
+// use either jade or ejs 
+app.set('view engine', 'ejs');
+// instruct express to server up static assets
+app.use(express.static( path.join(__dirname, 'public')));     
 // instruct express to server up static assets
 app.use(express.static( path.join(__dirname, 'css')));
-// instruct express to server up static assets
-app.use(express.static( path.join(__dirname, 'js')));
-// instruct express to server up static assets
-app.use(express.static( path.join(__dirname, 'logs')));
-
-var fs = require("fs");
 // Set server port
 app.listen(app.get('port'), function() {
 	
@@ -61,48 +69,18 @@ app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 });
 
-var sessionService = require('./session_service');
-var OAuthSession = require('./session_property');
-
-var OAuthUser = require('./user_property');
-var userService = require('./user_service');
-
-// set routes
+//set new route
 app.use('/login', function(req, res) {
-	
-    res.render('local_login');
+    res.render('login');
 });
 
-// set routes
-app.use('/local/login', function(req, res) {
-	
-	userService.getOAuthUser(req.body.username, req.body.password, function(results){
-		logger.info('get users info ' + JSON.stringify(results));
-		console.log("user results :" + JSON.stringify(results));
-
-		if(results.rows.length > 0){
-			res.redirect(301, '/users');
-		}
-	},function(error){
-		logger.error('local login get userinfo failed ' + error);
-		console.log("local user login error :" + JSON.stringify(error));
-		//res.status(403).send("unauthorized");
-		var locals = { error : error, process : 'oauth login ' };
-		res.render('error',locals);
-	});
-
-});
-
-// set routes
 app.use('/register', function(req, res) {
-	
     res.render('register');
 });
 
-// set routes
 app.use('/logs', function(req, res) {
 	
-	fs.readdir(__dirname+"/logs/",function(err, files){
+    fs.readdir(__dirname+"/public/logs/",function(err, files){
 		if (err) {
 			logger.error('read logs failed! ' + err);
 			//res.status(500).send("read logs failed");
@@ -124,6 +102,63 @@ app.use('/logs', function(req, res) {
 	});
 });
 
+app.use('/local/login', function(req, res) {
+    res.render('local-login');
+});
+
+app.use('/local/main', function(req, res) {
+    res.render('local-main');
+});
+
+app.use('/local/users', function(req, res) {
+	
+    userService.getAll(function(results){
+		logger.info('get users info ' + JSON.stringify(results));
+		console.log("user results :" + JSON.stringify(results));
+
+		var params = { users: results.rows };
+		res.render('local-users',params);
+	},function(error){
+		logger.error('get users info failed ' + error);
+		console.log("get users error :" + JSON.stringify(error));
+		//res.status(500).send("get users information failed. " + error);
+		
+		var locals = { error : error, process : 'oauth login get users information ' };
+		res.render('error',locals);
+	});
+});
+
+app.use('/local/consumers', function(req, res) {
+    res.render('local-consumers');
+});
+
+app.use('/local/resourceowners', function(req, res) {
+    res.render('local-resource-owners');
+});
+
+app.use('/local/supervisiondeal', function(req, res) {
+    res.render('local-supervision-deal');
+});
+
+// set routes
+app.use('/local/loginform', function(req, res) {
+	
+	userService.getOAuthUser(req.body.username, req.body.password, function(results){
+		logger.info('get users info ' + JSON.stringify(results));
+		console.log("user results :" + JSON.stringify(results));
+
+		if(results.rows.length > 0){
+			res.redirect(301, '/local/local-main');
+		}
+	},function(error){
+		logger.error('local login get userinfo failed ' + error);
+		console.log("local user login error :" + JSON.stringify(error));
+		//res.status(403).send("unauthorized");
+		var locals = { error : error, process : 'oauth login ' };
+		res.render('error',locals);
+	});
+
+});
 
 // set routes
 app.use('/users', function(req, res) {

@@ -1,84 +1,34 @@
-<link href="all.css" rel="stylesheet" type="text/css">
+<% layout('layout') -%>
+<% stylesheet('/css/all.css') -%>
+<% stylesheet('/css/animate.min.css') -%>
+<% stylesheet('/css/bootstrap.min.css') -%>
+<% stylesheet('/css/bootstrap-theme.min.css') -%>
+<% script('/js/SoundJS/lib/soundjs-0.6.2.min.js') -%>
+<% script('/js/PreloadJS/lib/preloadjs-0.6.2.min.js') -%>
+<% script('/js/jquery-3.0.0.min.js') -%>
+<% script('/js/bootstrap.min.js') -%>
+<% script('/js/logs.js') -%>
 
-<header>server logs</header>
-<hr>
-<br/>
-<article>
-	<form>
-		<table class="table">
-			<tr>
-				<td>logs</td>
-			</tr>
-			
-			<% paramFiles.forEach(function(file){ %>  
-			<tr>
-				<td><a href="<%= file.name %>"><%= file.name %></a></td>
-			</tr>
-			<% }) %> 
-		</table>
-	</form>
-</article>
-<hr/>
-<footer>server logs</footer>
+<div class="container-fluid">
+	<div class="row fill-table-upper-content">&nbsp;
+	</div>
+	<div id="logsForm" class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<table class="table table-hover">
+				<tbody>
+					<tr>
+						<th>log files</th>
+					<tr>
+					<% paramFiles.forEach(function(file){ %>  
+						<tr>
+							<td><a href="<%= file.name %>"><%= file.name %></a></td>
+						</tr>
+					<% }) %> 
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<script type="text/javascript">
-$(function(){
-	// Returns width of browser viewport
-	$( window ).width();
-	// Returns width of HTML document
-	$( document ).width();
-	
-	$("body").css("padding-left",($(window).width() - $(".login-form").width())/2+"px");
-	$("body").css("padding-top",($(window).height() - $(".login-form").height())/2+"px");
-});
-</script>

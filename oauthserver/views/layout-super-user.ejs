@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<title>main layout</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<%-scripts%>
+		<%-stylesheets%>
+	</head>
+	<body class="bg-info page-background">
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">
+						<img class="herder-icon" alt="Brand" src="../images/icon-header.png">
+					</a>
+				</div>
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/logs">
+						logs
+					</a>
+				</div>
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/local/users">
+						users
+					</a>
+				</div>
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/local/consumers">
+						consumers
+					</a>
+				</div>
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/local/resourceowners">
+						resource owners
+					</a>
+				</div>
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/local/supervisiondeal">
+						supervision deal
+					</a>
+				</div>
+				<div class="navbar-header pull-right ">
+					<a class="navbar-brand" href="#">
+						Log Out
+					</a>
+				</div>
+			</div>
+		</nav>
+		<%-body -%>
+	</body>
+</html>

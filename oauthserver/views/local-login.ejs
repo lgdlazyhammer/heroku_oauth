@@ -1,0 +1,58 @@
+<% layout('layout') -%>
+<% stylesheet('/css/all.css') -%>
+<% stylesheet('/css/animate.min.css') -%>
+<% stylesheet('/css/bootstrap.min.css') -%>
+<% stylesheet('/css/bootstrap-theme.min.css') -%>
+<% script('/js/SoundJS/lib/soundjs-0.6.2.min.js') -%>
+<% script('/js/PreloadJS/lib/preloadjs-0.6.2.min.js') -%>
+<% script('/js/jquery-3.0.0.min.js') -%>
+<% script('/js/bootstrap.min.js') -%>
+<% script('/js/login.js') -%>
+
+<div class="container-fluid">
+	<div class="row fill-login-upper-content">&nbsp;
+	</div>
+	<div id="loginForm" class="row">
+		<div class="col-md-5"></div>
+		<div class="col-md-2">
+			<form id="loginFormForm" class="panel panel-primary" action="/local/loginform" method="post">
+				<div class="panel-body bg-primary">
+					<label for="exampleInputEmail1">User name</label>
+					<input type="text" name="username" class="form-control" id="exampleInputEmail1" placeholder="User name">
+				</div>
+				<div class="panel-body bg-primary">
+					<label for="exampleInputPassword1">Password</label>
+					<input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+				</div>
+				<div class="panel-body bg-primary">
+					<button type="button" class="btn btn-default" data-toggle="modal" data-target="#confirmLogin">Submit</button>
+					<button type="reset" class="btn btn-default">Reset</button>
+				</div>
+			</form>
+			<div class="alert alert-warning alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				please <strong>Log in</strong> to proceed.<br/>
+				if you don't have an account please <a href="/register"><strong>register</strong></a>
+			</div>
+		</div>
+		<div class="col-md-5"></div>
+	</div>
+	<div id="confirmLogin" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Login</h4>
+				</div>
+				<div class="modal-body">
+					are you confirm to <strong>Log in</strong>
+				</div>
+				<div class="modal-footer">
+					<button id="closeLoginFormAlertWindow" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button id="submitLoginFormAlertWindow" type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+</div>
+

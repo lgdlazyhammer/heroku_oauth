@@ -1,0 +1,84 @@
+<link href="all.css" rel="stylesheet" type="text/css">
+
+<header>server logs</header>
+<hr>
+<br/>
+<article>
+	<form>
+		<table class="table">
+			<tr>
+				<td>logs</td>
+			</tr>
+			
+			<% paramFiles.forEach(function(file){ %>  
+			<tr>
+				<td><a href="<%= file.name %>"><%= file.name %></a></td>
+			</tr>
+			<% }) %> 
+		</table>
+	</form>
+</article>
+<hr/>
+<footer>server logs</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script type="text/javascript">
+$(function(){
+	// Returns width of browser viewport
+	$( window ).width();
+	// Returns width of HTML document
+	$( document ).width();
+	
+	$("body").css("padding-left",($(window).width() - $(".login-form").width())/2+"px");
+	$("body").css("padding-top",($(window).height() - $(".login-form").height())/2+"px");
+});
+</script>

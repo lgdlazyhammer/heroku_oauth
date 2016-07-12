@@ -1,0 +1,34 @@
+.full-page{
+	width: 100%;
+	height: 100%;
+}
+
+.fill-login-upper-content{
+	height: 200px;
+}
+
+.fill-table-upper-content{
+	height: 80px;
+}
+
+.page-background{
+	background-image: url('../images/pagetwo-desktop-vertical.png');
+}
+
+.herder-icon{
+	margin-top:-15px;
+	margin-left:-18px;
+}
+
+//too slow
+/*#loginForm {
+  animation-duration: 3s;
+  animation-delay: 2s;
+  animation-iteration-count: 1;
+  -moz-animation-duration: 3s;
+  -moz-animation-delay: 2s;
+  -moz-animation-iteration-count: 1;
+  -webkit-animation-duration: 3s;
+  -webkit-animation-delay: 2s;
+  -webkit-animation-iteration-count: 1;
+}*/
