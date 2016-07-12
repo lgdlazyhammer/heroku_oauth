@@ -85,7 +85,7 @@ module.exports = {
 								console.log(result);
 							});
 							
-							client.query('CREATE TABLE IF NOT EXISTS authorizationRelation(id SERIAL primary key,consumer varchar(50) NOT NULL,resourceowner varchar(50) NOT NULL,createdate varchar(50),updatedate varchar(100))', function(err, result) {
+							client.query('CREATE TABLE IF NOT EXISTS authorizationRelation(id SERIAL primary key,user varchar(50),consumer varchar(50) NOT NULL,resourceowner varchar(50) NOT NULL,active bolean,createdate varchar(50),updatedate varchar(100))', function(err, result) {
 							
 								if(err) {
 									logger.error('initialize create authorizationRelation table failed.' + err);
