@@ -33,3 +33,7 @@ $ sudo npm install forever -g   #安装
 $ forever start app.js          #启动
 $ forever stop app.js           #关闭
 $ forever start -l logs/forever.log -o logs/out.log -e logs/err.log app.js   #输出日志和错误
+
+npm install -g forever-service
+forever-service install test
+This will provision app.js in the current directory as a service via forever. The service will automatically restart every time system is restarted.

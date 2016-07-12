@@ -23,6 +23,8 @@ var path = require('path');
 //generate a random unique string
 var rs = require('random-strings');
 var http = require('http');
+
+const https = require('https');
 var querystring = require('querystring');
 //parse post parameters
 var bodyParser = require("body-parser");
@@ -30,7 +32,6 @@ var bodyParser = require("body-parser");
 var requestIp = require('request-ip');
 //get server ip
 var serverIp = require('ip');
-
 //os is native for nodejs
 var os = require( 'os' );
 var networkInterfaces = os.networkInterfaces( );
@@ -58,6 +59,7 @@ app.listen(app.get('port'),function(){
 	console.log( networkInterfaces );
 	logger.info('Node app is running on ip ' + JSON.stringify(networkInterfaces));
 	logger.info('Node app is running on ip ' + serverIp.address());
+	logger.info('Node app remote server ip ' + defaults.host);
 	logger.info('Node app is running on port ' + app.get('port'));
 	console.log('Node app is running on port', app.get('port'));
 });
@@ -91,10 +93,52 @@ app.use('/oauth/login', function(req, response) {
     var consumer_info="", consumer_token="";
     
     var postData = querystring.stringify({
-      'key' : 'adfsa', 'secret':'fsdfs', 'ip':networkInterfaces.eth1.address, 'port':app.get('port'), 'callback_url':'/oauth/callback'
+      'key' : 'adfsa', 'secret':'fsdfs', 'ip':serverIp.address(), 'port':app.get('port'), 'callback_url':'/oauth/callback'
     });
+
+	var options = {
+		hostname: defaults.host,
+		port: defaults.port,
+		path: '/',
+		method: 'POST',
+		headers: {
+		'Content-Type': 'application/x-www-form-urlencoded',
+		'Content-Length': postData.length
+		}
+	};
+
+	var req = https.request(options, (res) => {
+		console.log('statusCode: ', res.statusCode);
+		console.log('headers: ', res.headers);
+
+		res.on('data', (d) => {
+			console.log(`BODY: ${d}`);
+            consumer_info += d;
+		});
+		res.on('end', () => {
+			//parse the consumer
+			if(res.statusCode == 200){
+				logger.info('oauth authorize request successed. ');
+				console.log("received consumer info:  "+consumer_info);
+				consumer_token = JSON.parse(consumer_info).consumer_token;
+				console.log('No more data in response.');
+				//get the response set-cookie value and set to the new request
+				//response["set-cookie"] = res.headers["set-cookie"];
+				response.redirect(301, 'http://'+defaults.host+':'+ defaults.port+'/oauth/login?consumer_token='+consumer_token);
+			}
+		});
+	});
+	req.write(postData);
+	req.end();
+	
+	req.on('error', (err) => {
+	  logger.error('oauth authorize request failed. ' + JSON.stringify(err));
+		console.log(`problem with request: ${err.message}`);
+		var locals = { error : err, process : 'oauth login' };
+		response.render('error',locals);
+	});
     
-    var options = {
+    /*var options = {
         hostname: defaults.host,
         port: defaults.port,
         path: '/oauth/authorize',
@@ -130,14 +174,14 @@ app.use('/oauth/login', function(req, response) {
     
     req.on('error', (err) => {
 		logger.error('oauth authorize request failed. ' + JSON.stringify(err));
-		console.log(`problem with request: ${e.message}`);
+		console.log(`problem with request: ${err.message}`);
 		var locals = { error : err, process : 'oauth login' };
-		res.render('error',locals);
+		response.render('error',locals);
     });
 
     // write data to request body
     req.write(postData);
-    req.end();
+    req.end();*/
 });
 
 app.use('/oauth/callback', function(req, res) {
