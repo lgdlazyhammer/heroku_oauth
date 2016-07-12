@@ -1,11 +1,12 @@
 var oauthuser = OAuthUser.prototype;
 
-function OAuthUser(NAME, PASSWORD, GENDER, PHONENUMBER, EMAIL, CREATEDATE, UPDATEDATE){
+function OAuthUser(NAME, PASSWORD, GENDER, PHONENUMBER, EMAIL, ADDRESS, CREATEDATE, UPDATEDATE){
 	this.name = NAME;
 	this.password = PASSWORD;
 	this.gender = GENDER;
 	this.phonenumber = PHONENUMBER;
 	this.email = EMAIL;
+	this.address = ADDRESS;
 	this.createdate = CREATEDATE;
 	this.updatedate = UPDATEDATE;
 }
@@ -28,6 +29,10 @@ oauthuser.getPhonenumber = function(){
 
 oauthuser.getEmail = function(){
 	return this.email;
+}
+
+oauthuser.getAddress = function(){
+	return this.address;
 }
 
 oauthuser.getCreatedate= function(){
@@ -56,6 +61,10 @@ oauthuser.setPhonenumber = function(PHONENUMBER){
 
 oauthuser.setEmail = function(EMAIL){
 	return this.email = EMAIL;
+}
+
+oauthuser.setAddress = function(ADDRESS){
+	return this.address = ADDRESS;
 }
 
 oauthuser.setCreatedate= function(CREATEDATE){

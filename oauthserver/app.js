@@ -188,13 +188,14 @@ app.use('/oauth/register', function(req, res) {
 	var gender = req.body.gender;
 	var phoneNumber = req.body.phonenumber;
 	var email = req.body.email;
+	var address = req.body.address;
 	
 	var createDate = Math.floor(Date.now() / 1000);
 	var updateDate = Math.floor(Date.now() / 1000);
 	
 	console.log("register info: " +name+"*****"+password+"*****"+gender+"*****"+phoneNumber+"*****"+email+"*****"+createDate+"*****"+updateDate);
 	
-	var registerUser = new OAuthUser(name,password,gender,phoneNumber,email,createDate,updateDate);
+	var registerUser = new OAuthUser(name,password,gender,phoneNumber,email,address,createDate,updateDate);
 	userService.save(registerUser,function(result){
 		logger.info('user register success. user ' + name);
 		var locals = { name : name, password : password, gender : gender, phoneNumber : phoneNumber, email : email, createDate : createDate, updateDate : updateDate };

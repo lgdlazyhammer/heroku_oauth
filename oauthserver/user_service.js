@@ -36,13 +36,14 @@ module.exports.getAll = function(CALLBACK, CALLBACKERROR){
 
 module.exports.save = function(OAuthUser, CALLBACK, CALLBACKERROR){	
     
-	var insertSQLString = "insert into users(name,password,gender,phonenumber,email,createdate,updatedate) values($1,$2,$3,$4,$5,$6,$7)";
+	var insertSQLString = "insert into users(name,password,gender,phonenumber,email,address,createdate,updatedate) values($1,$2,$3,$4,$5,$6,$7,$8)";
 	var value = [];
 	value.push(OAuthUser.getName());
 	value.push(OAuthUser.getPassword());
 	value.push(OAuthUser.getGender());
 	value.push(OAuthUser.getPhonenumber());
 	value.push(OAuthUser.getEmail());
+	value.push(OAuthUser.getAddress());
 	value.push(OAuthUser.getCreatedate());
 	value.push(OAuthUser.getUpdatedate());
 	
