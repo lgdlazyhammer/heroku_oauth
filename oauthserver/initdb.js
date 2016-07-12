@@ -59,6 +59,45 @@ module.exports = {
 								console.log(result);
 							});
 							
+							client.query('CREATE TABLE IF NOT EXISTS consumer(id SERIAL primary key,name varchar(50) NOT NULL,ip varchar(50) NOT NULL,port varchar(20),description varchar(100),createdate varchar(50),updatedate varchar(100))', function(err, result) {
+							
+								if(err) {
+									logger.error('initialize create consumer table failed.' + err);
+									done();
+								  return console.error('create table err', err);
+								}else{
+									logger.info('initialize create consumer table success.');
+									done();
+								}
+								console.log(result);
+							});
+							
+							client.query('CREATE TABLE IF NOT EXISTS resourceOwner(id SERIAL primary key,name varchar(50) NOT NULL,ip varchar(50) NOT NULL,port varchar(20),description varchar(100),createdate varchar(50),updatedate varchar(100))', function(err, result) {
+							
+								if(err) {
+									logger.error('initialize create resourceOwner table failed.' + err);
+									done();
+								  return console.error('create table err', err);
+								}else{
+									logger.info('initialize create resourceOwner table success.');
+									done();
+								}
+								console.log(result);
+							});
+							
+							client.query('CREATE TABLE IF NOT EXISTS authorizationRelation(id SERIAL primary key,consumer varchar(50) NOT NULL,resourceowner varchar(50) NOT NULL,createdate varchar(50),updatedate varchar(100))', function(err, result) {
+							
+								if(err) {
+									logger.error('initialize create authorizationRelation table failed.' + err);
+									done();
+								  return console.error('create table err', err);
+								}else{
+									logger.info('initialize create authorizationRelation table success.');
+									done();
+								}
+								console.log(result);
+							});
+							
 							
 							client.query('CREATE TABLE IF NOT EXISTS OAuthSession(uuid varchar(50) PRIMARY KEY,session varchar(1000) NOT NULL,expires varchar(100) NOT NULL)', function(err, result) {
 							
