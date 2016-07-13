@@ -1,5 +1,5 @@
 oauthserver/node_modules/
 oauthconsumer/node_modules/
-oauthserver/logs/
-oauthconsumer/logs/
+oauthserver/**/logs/
+oauthconsumer/**/logs/
 

@@ -160,9 +160,9 @@ app.use('/local/loginform', function(req, res) {
 app.use('/local/userall', function(req, res) {
 	
 	//response a normal 
-	res.json({users:[{username:'username',email:'email',password:'password',gender:'male',phonenumber:'phonenumber',address:'address',createdate:'createdate',updatedate:'updatedate'},
-					 {username:'username',email:'email',password:'password',gender:'male',phonenumber:'phonenumber',address:'address',createdate:'createdate',updatedate:'updatedate'}]});
-	return;
+	//res.json({users:[{username:'username',email:'email',password:'password',gender:'male',phonenumber:'phonenumber',address:'address',createdate:'createdate',updatedate:'updatedate'},
+	//				 {username:'username',email:'email',password:'password',gender:'male',phonenumber:'phonenumber',address:'address',createdate:'createdate',updatedate:'updatedate'}]});
+	//return;
 	
 	userService.getAll(function(results){
 		logger.info('get users info ' + JSON.stringify(results));
