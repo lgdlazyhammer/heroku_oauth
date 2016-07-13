@@ -1,4 +1,6 @@
 require('./initdb.js').initdb();
+require('./alterdb.js').alterdb();
+require('./insertsuperuser.js').insertSuperUser();
 
 var log4js = require('log4js');
 log4js.configure({
@@ -44,6 +46,14 @@ var OAuthSession = require('./session_property');
 var OAuthUser = require('./user_property');
 var userService = require('./user_service');
 
+var OAuthConsumer = require('./consumer_property');
+var consumerService = require('./consumer_service');
+
+var OAuthResourceOwner = require('./resource_owner_property');
+var resourceOwnerService = require('./resource_owner_service');
+
+var OAuthAuthorizationRelation = require('./authorization_relation_property');
+var authorizationRelationService = require('./authorization_relation_service');
 //set port for heroku
 app.set('port', (process.env.PORT || 4000));
 //Here we are configuring express to use body-parser as middle-ware.
@@ -111,21 +121,7 @@ app.use('/local/main', function(req, res) {
 });
 
 app.use('/local/users', function(req, res) {
-	
-    userService.getAll(function(results){
-		logger.info('get users info ' + JSON.stringify(results));
-		console.log("user results :" + JSON.stringify(results));
-
-		var params = { users: results.rows };
-		res.render('local-users',params);
-	},function(error){
-		logger.error('get users info failed ' + error);
-		console.log("get users error :" + JSON.stringify(error));
-		//res.status(500).send("get users information failed. " + error);
-		
-		var locals = { error : error, process : 'oauth login get users information ' };
-		res.render('error',locals);
-	});
+	res.render('local-users');
 });
 
 app.use('/local/consumers', function(req, res) {
@@ -161,23 +157,232 @@ app.use('/local/loginform', function(req, res) {
 });
 
 // set routes
-app.use('/users', function(req, res) {
+app.use('/local/userall', function(req, res) {
+	
+	//response a normal 
+	res.json({users:[{username:'username',email:'email',password:'password',gender:'male',phonenumber:'phonenumber',address:'address',createdate:'createdate',updatedate:'updatedate'},
+					 {username:'username',email:'email',password:'password',gender:'male',phonenumber:'phonenumber',address:'address',createdate:'createdate',updatedate:'updatedate'}]});
+	return;
 	
 	userService.getAll(function(results){
 		logger.info('get users info ' + JSON.stringify(results));
 		console.log("user results :" + JSON.stringify(results));
 
-		var params = { users: results.rows };
-		res.render('users',params);
+		// 数据以json形式返回
+		var temp = { users: results.rows };
+		console.log("get users info send response:  "+JSON.stringify(temp));
+		logger.info('get users info load success.');
+		//set return type json
+		res.json(temp);
 	},function(error){
 		logger.error('get users info failed ' + error);
 		console.log("get users error :" + JSON.stringify(error));
 		//res.status(500).send("get users information failed. " + error);
-		
-		var locals = { error : error, process : 'oauth login get users information ' };
-		res.render('error',locals);
+		// 数据以json形式返回
+		var temp = { error: error };
+		//set return type json
+		res.writeHead(500, {"Content-Type": "application/json"});
+		//res.status(200).send(JSON.stringify(temp));
+		res.end(JSON.stringify(temp));
 	});
 
+});
+
+// set routes
+app.use('/local/consumerall', function(req, res) {
+	
+	consumerService.getAll(function(results){
+		logger.info('get consumer info ' + JSON.stringify(results));
+		console.log("consumer results :" + JSON.stringify(results));
+
+		// 数据以json形式返回
+		var temp = { consumers: results.rows };
+		console.log("get consumers info send response:  "+JSON.stringify(temp));
+		logger.info('get consumers info load success.');
+		//res.status(200).send(JSON.stringify(temp));
+		res.status(200).send(temp);
+	},function(error){
+		logger.error('get consumers info failed ' + error);
+		console.log("get consumers error :" + JSON.stringify(error));
+		//res.status(500).send("get users information failed. " + error);
+		// 数据以json形式返回
+		var temp = { error: error };
+		//res.status(200).send(JSON.stringify(temp));
+		res.status(500).send(temp);
+	});
+
+});
+
+// set routes
+app.use('/local/resourceownerall', function(req, res) {
+	
+	resourceOnwerService.getAll(function(results){
+		logger.info('get consumer info ' + JSON.stringify(results));
+		console.log("consumer results :" + JSON.stringify(results));
+
+		// 数据以json形式返回
+		var temp = { resourceOwners: results.rows };
+		console.log("get resourceOwners info send response:  "+JSON.stringify(temp));
+		logger.info('get resourceOwners info load success.');
+		//res.status(200).send(JSON.stringify(temp));
+		res.status(200).send(temp);
+	},function(error){
+		logger.error('get resourceOwners info failed ' + error);
+		console.log("get resourceOwners error :" + JSON.stringify(error));
+		//res.status(500).send("get users information failed. " + error);
+		// 数据以json形式返回
+		var temp = { error: error };
+		//res.status(200).send(JSON.stringify(temp));
+		res.status(500).send(temp);
+	});
+
+});
+
+// set routes
+app.use('/local/authorizationrelationall', function(req, res) {
+	
+	authorizationRelationService.getAll(function(results){
+		logger.info('get authorizationRelation info ' + JSON.stringify(results));
+		console.log("authorizationRelation results :" + JSON.stringify(results));
+
+		// 数据以json形式返回
+		var temp = { authorizationRelation: results.rows };
+		console.log("get authorizationRelation info send response:  "+JSON.stringify(temp));
+		logger.info('get authorizationRelation info load success.');
+		//res.status(200).send(JSON.stringify(temp));
+		res.status(200).send(temp);
+	},function(error){
+		logger.error('get authorizationRelation info failed ' + error);
+		console.log("get authorizationRelation error : " + JSON.stringify(error));
+		//res.status(500).send("get users information failed. " + error);
+		// 数据以json形式返回
+		var temp = { error: error };
+		//res.status(200).send(JSON.stringify(temp));
+		res.status(500).send(temp);
+	});
+
+});
+
+// set routes
+app.use('/local/useradd', function(req, res) {
+	
+    var name = req.body.name;
+	var password = req.body.password;
+	var gender = req.body.gender;
+	var phoneNumber = req.body.phonenumber;
+	var email = req.body.email;
+	var address = req.body.address;
+	var isSupervisor = req.body.issupervisor;
+	
+	var createDate = Math.floor(Date.now() / 1000);
+	var updateDate = Math.floor(Date.now() / 1000);
+	
+	console.log("register info: " +name+"*****"+password+"*****"+gender+"*****"+phoneNumber+"*****"+email+"*****"+createDate+"*****"+updateDate);
+	
+	var addUser = new OAuthUser(name,password,gender,phoneNumber,email,address,isSupervisor,createDate,updateDate);
+	userService.save(addUser,function(result){
+		logger.info('user add success. user ' + result);
+		
+		// 数据以json形式返回
+		var temp = { result: true };
+		//set return type json
+		res.json(temp);
+	},function(error){
+		logger.error('user add failed! ' + error);
+		// 数据以json形式返回
+		var temp = { error: error };
+		//res.status(200).send(JSON.stringify(temp));
+		res.status(500).send(temp);
+	});
+	
+});
+
+// set routes
+app.use('/local/consumeradd', function(req, res) {
+	
+    var name = req.body.name;
+	var ip = req.body.ip;
+	var port = req.body.port;
+	var description = req.body.description;
+	
+	var createDate = Math.floor(Date.now() / 1000);
+	var updateDate = Math.floor(Date.now() / 1000);
+	
+	var addConsumer = new OAuthConsumer(name,ip,port,description,createDate,updateDate);
+	consumerService.save(addConsumer,function(result){
+		logger.info('Consumer add success. ' + result);
+		
+		// 数据以json形式返回
+		var temp = { result: true };
+		//set return type json
+		res.json(temp);
+	},function(error){
+		logger.error('Consumer add failed! ' + error);
+		// 数据以json形式返回
+		var temp = { error: error };
+		//res.status(200).send(JSON.stringify(temp));
+		res.status(500).send(temp);
+	});
+	
+});
+
+// set routes
+app.use('/local/resourceowneradd', function(req, res) {
+	
+    var name = req.body.name;
+	var ip = req.body.ip;
+	var port = req.body.port;
+	var description = req.body.description;
+	
+	var createDate = Math.floor(Date.now() / 1000);
+	var updateDate = Math.floor(Date.now() / 1000);
+	
+	var addResourceOwner = new OAuthResourceOwner(name,ip,port,description,createDate,updateDate);
+	resourceOwnerService.save(addResourceOwner,function(result){
+		logger.info('ResourceOwner add success. ' + result);
+		
+		// 数据以json形式返回
+		var temp = { result: true };
+		//set return type json
+		res.json(temp);
+	},function(error){
+		logger.error('ResourceOwner add failed! ' + error);
+		// 数据以json形式返回
+		var temp = { error: error };
+		//res.status(200).send(JSON.stringify(temp));
+		res.status(500).send(temp);
+	});
+	
+});
+
+
+// set routes
+app.use('/local/authorizationrelationadd', function(req, res) {
+	
+    var user = req.body.user;
+	var consumer = req.body.consumer;
+	var resourceowner = req.body.resourceowner;
+	var active = req.body.active;
+	
+	var createDate = Math.floor(Date.now() / 1000);
+	var updateDate = Math.floor(Date.now() / 1000);
+	
+	var addAuthorizationRelation = new OAuthAuthorizationRelation(user,consumer,resourceowner,active,createDate,updateDate);
+	authorizationRelationService.save(addAuthorizationRelation,function(result){
+		logger.info('AuthorizationRelation add success. user ' + result);
+		
+		// 数据以json形式返回
+		var temp = { result: true };
+		//set return type json
+		res.json(temp);
+	},function(error){
+		logger.error('AuthorizationRelation add failed! ' + error);
+		// 数据以json形式返回
+		var temp = { error: error };
+		//res.status(200).send(JSON.stringify(temp));
+		res.status(500).send(temp);
+	});
+	
 });
 
 // set routes
@@ -195,7 +400,7 @@ app.use('/oauth/register', function(req, res) {
 	
 	console.log("register info: " +name+"*****"+password+"*****"+gender+"*****"+phoneNumber+"*****"+email+"*****"+createDate+"*****"+updateDate);
 	
-	var registerUser = new OAuthUser(name,password,gender,phoneNumber,email,address,createDate,updateDate);
+	var registerUser = new OAuthUser(name,password,gender,phoneNumber,email,address,false,createDate,updateDate);
 	userService.save(registerUser,function(result){
 		logger.info('user register success. user ' + name);
 		var locals = { name : name, password : password, gender : gender, phoneNumber : phoneNumber, email : email, createDate : createDate, updateDate : updateDate };

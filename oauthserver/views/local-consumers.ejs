@@ -6,6 +6,7 @@
 <% script('/js/SoundJS/lib/soundjs-0.6.2.min.js') -%>
 <% script('/js/PreloadJS/lib/preloadjs-0.6.2.min.js') -%>
 <% script('/js/jquery-3.0.0.min.js') -%>
+<% script('/js/transparency.min.js') -%>
 <% script('/js/bootstrap.min.js') -%>
 <% script('/js/local-consumers.js') -%>
 
@@ -15,25 +16,25 @@
 	<div id="consumersForm" class="row">
 		<div class="col-md-1"></div>
 		<div class="col-md-10">
-			<form>
+			<form id="localUserAddConsumerForm" action="" method="post">
 				<table class="table">
 					<tbody>
 						<tr>
 							<td>
 								<label for="userName1">Consumer name</label>
-								<input type="text" class="form-control" id="userName1" placeholder="consumer name">
+								<input type="text" name="name" class="form-control" id="userName1" placeholder="consumer name">
 							</td>
 							<td>
 								<label for="ip1">IP</label>
-								<input type="text" class="form-control" id="ip1" placeholder="ip">
+								<input type="text" name="ip" class="form-control" id="ip1" placeholder="ip">
 							</td>
 							<td>
 								<label for="port1">Port</label>
-								<input type="text" class="form-control" id="port1" placeholder="port1">
+								<input type="text" name="port" class="form-control" id="port1" placeholder="port1">
 							</td>
 							<td>
 								<label for="description1">Description</label>
-								<input type="text" class="form-control" id="description1" placeholder="description">
+								<input type="text" name="description" class="form-control" id="description1" placeholder="description">
 							</td>
 						<tr>
 						<tr>
@@ -48,29 +49,129 @@
 			<table class="table table-hover">
 				<tbody>
 					<tr>
-						<th>user name</th>
-						<th>email address</th>
-						<th>password</th>
-						<th>gender</th>
-						<th>phone number</th>
-						<th>address</th>
-						<th>create date</th>
-						<th>update date</th>
+						<th>Consumer name</th>
+						<th>IP</th>
+						<th>Port</th>
+						<th>Description</th>
+						<th>Create date</th>
+						<th>Update date</th>
 					<tr>
+				</tbody>
+			</table>
+			<table class="table table-hover">
+				<tbody id="displayConsumers">
 					<tr>
-						<td>adfsf</td>
-						<td>adfsf</td>
-						<td>adfsf</td>
-						<td>adfsf</td>
-						<td>adfsf</td>
-						<td>adfsf</td>
-						<td>adfsf</td>
-						<td>adfsf</td>
-					<tr>
+						<td class="name"></td>
+						<td class="ip"></td>
+						<td class="port"></td>
+						<td class="description"></td>
+						<td class="createdate"></td>
+						<td class="updatedate"></td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
 		<div class="col-md-1"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<button id="refreshConsumersTable" type="button" class="btn btn-primary">refresh consumers</button>
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+	
+	
+	<button id="confirmConsumersGetFailButton" class="hide" type="button" data-toggle="modal" data-target="#confirmConsumersGetFail">get Consumers failed</button>
+	<button id="confirmConsumersGetTimeoutButton" class="hide" type="button" data-toggle="modal" data-target="#confirmConsumersGetTimeout">get Consumers request timeout</button>
+	<button id="confirmConsumerAddSuccessButton" class="hide" type="button" data-toggle="modal" data-target="#confirmConsumerAddSuccess">add Consumer request successed</button>
+	<button id="confirmConsumerAddFailButton" class="hide" type="button" data-toggle="modal" data-target="#confirmConsumerAddFail">add Consumer request failed</button>
+	<button id="confirmConsumerAddTimeoutButton" class="hide" type="button" data-toggle="modal" data-target="#confirmConsumerAddTimeout">add Consumer request timeout</button>
+	<div id="confirmConsumersGetFail" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Get Consumer info</h4>
+				</div>
+				<div class="modal-body">
+					get Consumer info <strong>Failed.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmConsumersGetTimeout" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Get Consumer info</h4>
+				</div>
+				<div class="modal-body">
+					get Consumer info <strong>Request Timeout.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmConsumerAddSuccess" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add Consumer info</h4>
+				</div>
+				<div class="modal-body">
+					add Consumer info <strong>Success.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmConsumerAddFail" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add Consumer info</h4>
+				</div>
+				<div class="modal-body">
+					add Consumer info <strong>Failed.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmConsumerAddTimeout" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add Consumer info</h4>
+				</div>
+				<div class="modal-body">
+					add Consumer info <strong>Timeout.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
 	</div>
 </div>
 

@@ -6,6 +6,7 @@
 <% script('/js/SoundJS/lib/soundjs-0.6.2.min.js') -%>
 <% script('/js/PreloadJS/lib/preloadjs-0.6.2.min.js') -%>
 <% script('/js/jquery-3.0.0.min.js') -%>
+<% script('/js/transparency.min.js') -%>
 <% script('/js/bootstrap.min.js') -%>
 <% script('/js/local-resource-owners.js') -%>
 
@@ -15,25 +16,25 @@
 	<div id="resourceOwnersForm" class="row">
 		<div class="col-md-1"></div>
 		<div class="col-md-10">
-			<form>
+			<form id="localUserAddResourceOwnerForm" action="" method="post">
 				<table class="table">
 					<tbody>
 						<tr>
 							<td>
 								<label for="userName1">Resource owner name</label>
-								<input type="text" class="form-control" id="userName1" placeholder="resource owner name">
+								<input type="text" name="name" class="form-control" id="userName1" placeholder="resource owner name">
 							</td>
 							<td>
 								<label for="ip1">IP</label>
-								<input type="text" class="form-control" id="ip1" placeholder="ip">
+								<input type="text" name="ip" class="form-control" id="ip1" placeholder="ip">
 							</td>
 							<td>
 								<label for="port1">Port</label>
-								<input type="text" class="form-control" id="port1" placeholder="port1">
+								<input type="text" name="port" class="form-control" id="port1" placeholder="port1">
 							</td>
 							<td>
 								<label for="description1">Description</label>
-								<input type="text" class="form-control" id="description1" placeholder="description">
+								<input type="text" name="description" class="form-control" id="description1" placeholder="description">
 							</td>
 						<tr>
 						<tr>
@@ -48,29 +49,129 @@
 			<table class="table table-hover">
 				<tbody>
 					<tr>
-						<th>user name</th>
-						<th>email address</th>
-						<th>password</th>
-						<th>gender</th>
-						<th>phone number</th>
-						<th>address</th>
-						<th>create date</th>
-						<th>update date</th>
+						<th>Resource owner name</th>
+						<th>IP</th>
+						<th>Port</th>
+						<th>Description</th>
+						<th>Create date</th>
+						<th>Update date</th>
 					<tr>
+				</tbody>
+			</table>
+			<table class="table table-hover">
+				<tbody id="displayResourceOwners">
 					<tr>
-						<td>adfsf</td>
-						<td>adfsf</td>
-						<td>adfsf</td>
-						<td>adfsf</td>
-						<td>adfsf</td>
-						<td>adfsf</td>
-						<td>adfsf</td>
-						<td>adfsf</td>
-					<tr>
+						<td class="name"></td>
+						<td class="ip"></td>
+						<td class="port"></td>
+						<td class="description"></td>
+						<td class="createdate"></td>
+						<td class="updatedate"></td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
 		<div class="col-md-1"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<button id="refreshResourceOwnersTable" type="button" class="btn btn-primary">refresh resource owners</button>
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+	
+	
+	<button id="confirmResourceOwnersGetFailButton" class="hide" type="button" data-toggle="modal" data-target="#confirmResourceOwnersGetFail">get ResourceOwner failed</button>
+	<button id="confirmResourceOwnersGetTimeoutButton" class="hide" type="button" data-toggle="modal" data-target="#confirmResourceOwnersGetTimeout">get ResourceOwner request timeout</button>
+	<button id="confirmResourceOwnerAddSuccessButton" class="hide" type="button" data-toggle="modal" data-target="#confirmResourceOwnerAddSuccess">add ResourceOwner request successed</button>
+	<button id="confirmResourceOwnerAddFailButton" class="hide" type="button" data-toggle="modal" data-target="#confirmResourceOwnerAddFail">add ResourceOwner request failed</button>
+	<button id="confirmResourceOwnerAddTimeoutButton" class="hide" type="button" data-toggle="modal" data-target="#confirmResourceOwnerAddTimeout">add ResourceOwner request timeout</button>
+	<div id="confirmResourceOwnersGetFail" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Get ResourceOwner info</h4>
+				</div>
+				<div class="modal-body">
+					get ResourceOwner info <strong>Failed.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmResourceOwnersGetTimeout" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Get Consumer info</h4>
+				</div>
+				<div class="modal-body">
+					get Consumer info <strong>Request Timeout.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmResourceOwnerAddSuccess" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add ResourceOwner info</h4>
+				</div>
+				<div class="modal-body">
+					add ResourceOwner info <strong>Success.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmResourceOwnerAddFail" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add ResourceOwner info</h4>
+				</div>
+				<div class="modal-body">
+					add ResourceOwner info <strong>Failed.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmResourceOwnerAddTimeout" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add ResourceOwner info</h4>
+				</div>
+				<div class="modal-body">
+					add ResourceOwner info <strong>Timeout.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
 	</div>
 </div>
 

@@ -1,12 +1,13 @@
 var oauthuser = OAuthUser.prototype;
 
-function OAuthUser(NAME, PASSWORD, GENDER, PHONENUMBER, EMAIL, ADDRESS, CREATEDATE, UPDATEDATE){
+function OAuthUser(NAME, PASSWORD, GENDER, PHONENUMBER, EMAIL, ADDRESS, ISSUPERVISOR, CREATEDATE, UPDATEDATE){
 	this.name = NAME;
 	this.password = PASSWORD;
 	this.gender = GENDER;
 	this.phonenumber = PHONENUMBER;
 	this.email = EMAIL;
 	this.address = ADDRESS;
+	this.issupervisor = ISSUPERVISOR;
 	this.createdate = CREATEDATE;
 	this.updatedate = UPDATEDATE;
 }
@@ -35,6 +36,10 @@ oauthuser.getAddress = function(){
 	return this.address;
 }
 
+oauthuser.getIsSupervisor = function(){
+	return this.isSupervisor;
+}
+
 oauthuser.getCreatedate= function(){
 	return this.createdate;
 }
@@ -44,35 +49,39 @@ oauthuser.getUpdatedate = function(){
 }
 
 oauthuser.setName = function(NAME){
-	return this.name = NAME;
+	this.name = NAME;
 }
 
 oauthuser.setPassword = function(PASSWORD){
-	return this.password = PASSWORD;
+	this.password = PASSWORD;
 }
 
 oauthuser.setGender = function(GENDER){
-	return this.gender = GENDER;
+	this.gender = GENDER;
 }
 
 oauthuser.setPhonenumber = function(PHONENUMBER){
-	return this.phonenumber = PHONENUMBER;
+	this.phonenumber = PHONENUMBER;
 }
 
 oauthuser.setEmail = function(EMAIL){
-	return this.email = EMAIL;
+	this.email = EMAIL;
 }
 
 oauthuser.setAddress = function(ADDRESS){
-	return this.address = ADDRESS;
+	this.address = ADDRESS;
+}
+
+oauthuser.setIsSupervisor = function(ISSUPERVISOR){
+	this.isSupervisor = ISSUPERVISOR;
 }
 
 oauthuser.setCreatedate= function(CREATEDATE){
-	return this.createdate = CREATEDATE;
+	this.createdate = CREATEDATE;
 }
 
 oauthuser.setUpdatedate = function(UPDATEDATE){
-	return this.updatedate = UPDATEDATE;
+	this.updatedate = UPDATEDATE;
 }
 
 

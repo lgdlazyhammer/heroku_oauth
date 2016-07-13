@@ -6,6 +6,8 @@
 <% script('/js/SoundJS/lib/soundjs-0.6.2.min.js') -%>
 <% script('/js/PreloadJS/lib/preloadjs-0.6.2.min.js') -%>
 <% script('/js/jquery-3.0.0.min.js') -%>
+<% script('/js/jquery-migrate-3.0.0.min.js') -%>
+<% script('/js/transparency.min.js') -%>
 <% script('/js/bootstrap.min.js') -%>
 <% script('/js/local-users.js') -%>
 
@@ -15,6 +17,64 @@
 	<div id="usersForm" class="row">
 		<div class="col-md-1"></div>
 		<div class="col-md-10">
+			<form id="localUserAddUserForm" action="" method="post">
+				<table class="table">
+					<tbody>
+						<tr>
+							<td>
+								<label for="userName1">User Name</label>
+								<input name="username" type="text" class="form-control" id="userName1" placeholder="user name">
+							</td>
+							<td>
+								<label for="email1">Email Address</label>
+								<input name="email" type="email" class="form-control" id="email1" placeholder="email address">
+							</td>
+							<td>
+								<label for="password1">Password</label>
+								<input name="password" type="password" class="form-control" id="password1" placeholder="password">
+							</td>
+							<td>
+								<label for="gender1">Gender</label>
+								<div id="gender1">
+									<label class="radio-inline">
+										<input type="radio" name="gender" id="inlineRadio1" value="male" checked> male
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="gender" id="inlineRadio2" value="female"> female
+									</label>
+								</div>
+							</td>
+						<tr>
+						<tr>
+							<td>
+								<label for="phoneNumber1">Phone number</label>
+								<input type="text" name="phonenumber" class="form-control" id="phoneNumber1" placeholder="phone number">
+							</td>
+							<td>
+								<label for="address1">Address</label>
+								<input type="text" name="address" class="form-control" id="address1" placeholder="address">
+							</td>
+							<td>
+								<label for="supervisior1">Is supervisor</label>
+								<div id="supervisior1">
+									<label class="radio-inline">
+										<input type="radio" name="issupervisor" id="inlineRadio3" value="true"> yes
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="issupervisor" id="inlineRadio4" value="false" checked> no
+									</label>
+								</div>
+							</td>
+						<tr>
+						<tr>
+							<td>
+								<button type="submit" class="btn btn-primary">Submit</button>
+								<button type="reset" class="btn btn-primary">Reset</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
 			<table class="table table-hover">
 				<tbody>
 					<tr>
@@ -27,21 +87,123 @@
 						<th>create date</th>
 						<th>update date</th>
 					<tr>
-					<% users.forEach(function(user){ %>  
-					<tr class="tr">
-						<td class="td"><%=user.name %></td>
-						<td class="td"><%=user.password %></td>
-						<td class="td"><%=user.gender %></td>
-						<td class="td"><%=user.phonenumber %></td>
-						<td class="td"><%=user.email %></td>
-						<td class="td"><%=user.createdate %></td>
-						<td class="td"><%=user.updatedate %></td>
+				</tbody>
+			</table>
+			<table class="table table-hover">
+				<tbody id="displayUsers"> 
+					<tr>
+						<td class="username"></td>
+						<td class="email"></td>
+						<td class="password"></td>
+						<td class="gender"></td>
+						<td class="phonenumber"></td>
+						<td class="address"></td>
+						<td class="createdate"></td>
+						<td class="updatedate"></td>
 					</tr>
-					<% }) %> 
 				</tbody>
 			</table>
 		</div>
 		<div class="col-md-1"></div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<button id="refreshUsersTable" type="button" class="btn btn-primary">refresh users</button>
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+	
+	<button id="confirmUsersGetFailButton" class="hide" type="button" data-toggle="modal" data-target="#confirmUsersGetFail">get users failed</button>
+	<button id="confirmUsersGetTimeoutButton" class="hide" type="button" data-toggle="modal" data-target="#confirmUsersGetTimeout">get users request timeout</button>
+	<button id="confirmUserAddSuccessButton" class="hide" type="button" data-toggle="modal" data-target="#confirmUserAddSuccess">add user request successed</button>
+	<button id="confirmUserAddFailButton" class="hide" type="button" data-toggle="modal" data-target="#confirmUserAddFail">add user request failed</button>
+	<button id="confirmUserAddTimeoutButton" class="hide" type="button" data-toggle="modal" data-target="#confirmUserAddTimeout">add user request timeout</button>
+	<div id="confirmUsersGetFail" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Get users info</h4>
+				</div>
+				<div class="modal-body">
+					get users info <strong>Failed.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmUsersGetTimeout" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Get users info</h4>
+				</div>
+				<div class="modal-body">
+					get users info <strong>Request Timeout.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmUserAddSuccess" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add users info</h4>
+				</div>
+				<div class="modal-body">
+					add users info <strong>Success.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmUserAddFail" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add users info</h4>
+				</div>
+				<div class="modal-body">
+					add users info <strong>Failed.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmUserAddTimeout" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add users info</h4>
+				</div>
+				<div class="modal-body">
+					add users info <strong>Timeout.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
 	</div>
 </div>
 

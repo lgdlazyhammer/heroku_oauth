@@ -8,6 +8,7 @@
 <% script('/js/PreloadJS/lib/preloadjs-0.6.2.min.js') -%>
 <% script('/js/jquery-3.0.0.min.js') -%>
 <% script('/js/jquery-migrate-3.0.0.min.js') -%>
+<% script('/js/transparency.min.js') -%>
 <% script('/js/bootstrap.min.js') -%>
 <% script('/js/bootstrap-switch.min.js') -%>
 <% script('/js/local-supervision-deal.js') -%>
@@ -22,31 +23,165 @@
 			<form class="form-inline" id="supervisionDealFormForm" action="">
 				<div class="form-group">
 					<label for="userName1">user</label>
-					<input type="text" class="form-control" id="userName1" placeholder="user name">
+					<input type="text" name="user" class="form-control" id="userName1" placeholder="user name">
 				</div>
 				<div class="form-group">
 					<label for="consumer1">consumer</label>
-					<input type="text" class="form-control" id="consumer1" placeholder="consumer">
+					<input type="text" name="consumer" class="form-control" id="consumer1" placeholder="consumer">
 				</div>
 				<div class="form-group">
 					<label for="resourceOwner1">resource owner</label>
-					<input type="text" class="form-control" id="resourceOwner1" placeholder="resource owner">
+					<input type="text" name="resourceowner" class="form-control" id="resourceOwner1" placeholder="resource owner">
 				</div>
 				<div class="form-group">
-					<div id="supervisionCheckSwitch" class="switch" data-on="primary" data-off="info">
-						<input name="local-supervsion-checkbox" type="checkbox" checked />
+					<div class="switch" data-on="primary" data-off="info">
+						<input id="supervisionCheckSwitch" name="active" type="checkbox" checked />
 					</div>
 				</div>
-				<br/>
-				<br/>
-				<br/>
 				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<button id="submitSupervisionDealFormForm" type="button" class="btn btn-primary">Send invitation</button>
+					<div class="col-sm-offset-3 col-sm-9">
+						<br/>
+						<br/>
+						<br/>
+						<button id="submitSupervisionDealFormForm" type="submit" class="btn btn-primary">Submit</button>
 					</div>
 				</div>
 			</form>
 		</div>
+	</div>
+	
+	<div class="row fill-table-upper-content">&nbsp;
+	</div>
+	
+	<div id="supervisionDealDisplayTable" class="row">
+		<div class="col-md-1">
+		</div>
+		<div class="col-md-11">
+			<table class="table table-hover">
+				<tbody>
+					<tr>
+						<th>User</th>
+						<th>Consumer</th>
+						<th>Resource Owner</th>
+						<th>Is active</th>
+						<th>Create date</th>
+						<th>Update date</th>
+					<tr>
+				</tbody>
+			</table>
+			<table class="table table-hover">
+				<tbody id="displaySupervisionRelations">
+					<tr>
+						<td class="user"></td>
+						<td class="consumer"></td>
+						<td class="resourceowner"></td>
+						<td class="active"></td>
+						<td class="createdate"></td>
+						<td class="updatedate"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-10">
+			<button id="refreshSupervisionRelationsTable" type="button" class="btn btn-primary">refresh SupervisionRelation</button>
+		</div>
+		<div class="col-md-1"></div>
+	</div>
+	
+	
+	<button id="confirmSupervisionRelationsGetFailButton" class="hide" type="button" data-toggle="modal" data-target="#confirmSupervisionRelationsGetFail">get SupervisionRelation failed</button>
+	<button id="confirmSupervisionRelationsGetTimeoutButton" class="hide" type="button" data-toggle="modal" data-target="#confirmSupervisionRelationsGetTimeout">get SupervisionRelation request timeout</button>
+	<button id="confirmSupervisionRelationAddSuccessButton" class="hide" type="button" data-toggle="modal" data-target="#confirmSupervisionRelationAddSuccess">add SupervisionRelation request successed</button>
+	<button id="confirmSupervisionRelationAddFailButton" class="hide" type="button" data-toggle="modal" data-target="#confirmSupervisionRelationAddFail">add SupervisionRelation request failed</button>
+	<button id="confirmSupervisionRelationAddTimeoutButton" class="hide" type="button" data-toggle="modal" data-target="#confirmSupervisionRelationAddTimeout">add SupervisionRelation request timeout</button>
+	<div id="confirmSupervisionRelationsGetFail" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Get SupervisionRelation info</h4>
+				</div>
+				<div class="modal-body">
+					get SupervisionRelation info <strong>Failed.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmSupervisionRelationsGetTimeout" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Get SupervisionRelation info</h4>
+				</div>
+				<div class="modal-body">
+					get SupervisionRelation info <strong>Request Timeout.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmSupervisionRelationAddSuccess" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add SupervisionRelation info</h4>
+				</div>
+				<div class="modal-body">
+					add SupervisionRelation info <strong>Success.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmSupervisionRelationAddFail" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add SupervisionRelation info</h4>
+				</div>
+				<div class="modal-body">
+					add SupervisionRelation info <strong>Failed.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div>
+	<div id="confirmSupervisionRelationAddTimeout" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">Add SupervisionRelation info</h4>
+				</div>
+				<div class="modal-body">
+					add SupervisionRelation info <strong>Timeout.</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<!-- <button id="confirmUsersGetFailConfirmButton" type="button" class="btn btn-primary">Save changes</button> -->
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
 	</div>
 </div>
 

@@ -23,7 +23,7 @@ if(process.env.DATABASE_URL != null && process.env.DATABASE_URL != "" && process
 //it will keep idle connections open for a (configurable) 30 seconds
 //and set a limit of 10 (also configurable)
 module.exports = {
-	initdb: function(){
+	alterdb: function(){
 		pg.connect(conString, function(err, client, done) {
 			if(err) {
 				logger.error('alter connect database failed! ' + err);
