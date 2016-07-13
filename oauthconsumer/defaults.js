@@ -1,9 +1,15 @@
 var defaults = module.exports = {
   // database host. defaults to localhost
-  host: '120.25.102.53',
+  //a li cloud server ip
+  //host: '120.25.102.53',
+  //host: 'localhost',
+  //heroku server ip
+  host: 'oauthserver.herokuapp.com',
 
-  //database user's name
-  port: '4000'
+  //a li cloud server port
+  //port: '4000'
+  //heroku server port
+  port: '443'
 };
 
 //parse int8 so you can get your count values as actual numbers
