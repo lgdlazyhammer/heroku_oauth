@@ -139,7 +139,7 @@ app.use('/local/supervisiondeal', function(req, res) {
 // set routes
 app.use('/local/loginform', function(req, res) {
 	
-	userService.getOAuthUser(req.body.username, req.body.password, function(results){
+	userService.getOAuthUser(req.body.name, req.body.password, function(results){
 		logger.info('get users info ' + JSON.stringify(results));
 		console.log("user results :" + JSON.stringify(results));
 
