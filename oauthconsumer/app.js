@@ -49,7 +49,7 @@ app.set('view engine', 'ejs');
 // views as directory for all template files
 app.set('views', path.join(__dirname, 'views'));    
 // instruct express to server up static assets
-app.use(express.static( path.join(__dirname, 'css')));
+app.use(express.static( path.join(__dirname, 'public')));
 app.use(express.static( path.join(__dirname, 'js')));
 app.use(express.static( path.join(__dirname, 'logs')));
 // Set server port

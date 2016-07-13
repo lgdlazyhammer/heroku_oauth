@@ -41,3 +41,6 @@
 [2016-07-10 11:17:21.352] [INFO] cheese - Node app is running on port 3000
 [2016-07-10 11:19:27.329] [INFO] cheese - Node app is running on port 3000
 [2016-07-10 11:19:33.162] [INFO] cheese - oauth authorize request successed. 
+[2016-07-11 12:56:28.204] [INFO] cheese - Node app is running on ip {"本地连接":[{"address":"fe80::7584:2ef0:5670:456","netmask":"ffff:ffff:ffff:ffff::","family":"IPv6","mac":"34:64:a9:1e:51:2d","scopeid":11,"internal":false},{"address":"10.101.142.231","netmask":"255.255.252.0","family":"IPv4","mac":"34:64:a9:1e:51:2d","internal":false}],"Loopback Pseudo-Interface 1":[{"address":"::1","netmask":"ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff","family":"IPv6","mac":"00:00:00:00:00:00","scopeid":0,"internal":true},{"address":"127.0.0.1","netmask":"255.0.0.0","family":"IPv4","mac":"00:00:00:00:00:00","internal":true}]}
+[2016-07-11 12:56:28.224] [INFO] cheese - Node app is running on ip 10.101.142.231
+[2016-07-11 12:56:28.227] [INFO] cheese - Node app is running on port 3000
