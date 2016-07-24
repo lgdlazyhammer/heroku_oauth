@@ -136,6 +136,10 @@ app.use('/local/supervisiondeal', function(req, res) {
     res.render('local-supervision-deal');
 });
 
+app.use('/local/local-main', function(req, res) {
+    res.render('local-main');
+});
+
 // set routes
 app.use('/local/loginform', function(req, res) {
 	
