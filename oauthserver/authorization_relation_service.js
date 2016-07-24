@@ -37,7 +37,7 @@ module.exports.getAll = function(CALLBACK, CALLBACKERROR){
 
 module.exports.save = function(OAuthAuthorizationRelation, CALLBACK, CALLBACKERROR){	
     
-	var insertSQLString = "insert into authorizationrelation(user,consumer,resourceowner,active,createdate,updatedate) values($1,$2,$3,$4,$5,$6)";
+	var insertSQLString = "insert into authorizationrelation(username,consumer,resourceowner,active,createdate,updatedate) values($1,$2,$3,$4,$5,$6)";
 	var value = [];
 	value.push(OAuthAuthorizationRelation.getUser());
 	value.push(OAuthAuthorizationRelation.getConsumer());

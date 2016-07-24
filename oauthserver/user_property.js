@@ -7,7 +7,7 @@ function OAuthUser(NAME, PASSWORD, GENDER, PHONENUMBER, EMAIL, ADDRESS, ISSUPERV
 	this.phonenumber = PHONENUMBER;
 	this.email = EMAIL;
 	this.address = ADDRESS;
-	this.issupervisor = ISSUPERVISOR;
+	this.isSupervisor = ISSUPERVISOR;
 	this.createdate = CREATEDATE;
 	this.updatedate = UPDATEDATE;
 }

@@ -216,7 +216,7 @@ app.use('/local/consumerall', function(req, res) {
 // set routes
 app.use('/local/resourceownerall', function(req, res) {
 	
-	resourceOnwerService.getAll(function(results){
+	resourceOwnerService.getAll(function(results){
 		logger.info('get consumer info ' + JSON.stringify(results));
 		console.log("consumer results :" + JSON.stringify(results));
 
@@ -277,7 +277,7 @@ app.use('/local/useradd', function(req, res) {
 	var createDate = Math.floor(Date.now() / 1000);
 	var updateDate = Math.floor(Date.now() / 1000);
 	
-	console.log("register info: " +name+"*****"+password+"*****"+gender+"*****"+phoneNumber+"*****"+email+"*****"+createDate+"*****"+updateDate);
+	console.log("register info: " +name+"*****"+password+"*****"+gender+"*****"+phoneNumber+"*****"+email+"*****"+createDate+"*****"+updateDate+"****** is supervisor:"+isSupervisor);
 	
 	var addUser = new OAuthUser(name,password,gender,phoneNumber,email,address,isSupervisor,createDate,updateDate);
 	userService.save(addUser,function(result){

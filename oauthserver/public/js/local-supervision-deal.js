@@ -24,7 +24,7 @@ $(function(){
 		dataType: 'json',
 		success: function(data){
 			console.log(data);
-			Transparency.render(document.getElementById('displaySupervisionRelations'), data.supervisionRelations);
+			Transparency.render(document.getElementById('displaySupervisionRelations'), data.authorizationRelation);
 		},
 		error: function(XMLHttpRequest, textStatus, errorThrown){
 			console.log(errorThrown);
